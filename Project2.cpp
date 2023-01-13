@@ -28,6 +28,7 @@ enum enAnswer
 };
 struct stQuestionInfo
 {
+    short QuestionNumbers;
     short QuestionNumber;
     short Number1;
     short Number2;
@@ -39,25 +40,15 @@ struct stQuestionInfo
 struct stGameResults
 {
 
-    short QuestionNumber = 0;
+    short NumberOfQuestions = 0;
     enQuestionLevel QuestionLevel;
-    string QuestionLevelName = "";
+    string QuestionLevelType = "";
     enOperationType OperationType;
-    string OperationTypeName = "";
+    string OperationTypeCharacter = "";
     short NumberOfRightAnswers = 0;
     short NumberOfWrongAnswers = 0;
-
 };
 
-enQuestionLevel
-MixQuestionLevel()
-{
-    return (enQuestionLevel)RandomNumber(1, 4);
-}
-enOperationType MixOperationType()
-{
-    return (enOperationType)RandomNumber(1, 5);
-}
 enQuestionLevel ReadQuestionLevel()
 {
     short QuestionLevel = 1;
@@ -79,22 +70,6 @@ enOperationType ReadOperationType()
     return (enOperationType)OperationType;
 }
 
-// string QuestionLevelName(enQuestionLevel QuestionLevel)
-// {
-
-//     string arrQuestionLevelName = {"Easy", "Med", "Hard", "Mix"};
-
-//     return arrQuestionLevelName[QuestionLevel - 1];
-// }
-
-// string OperationTypeName(enOperationType OperationType)
-// {
-
-//     string arrOperationLevelName = {"Add", "Sub", "Mul", "Div", "Mix"};
-
-//     return arrOperationLevelName[OperationType - 1];
-// }
-
 short ReadHowManyQuestions()
 {
     short Questions = 0;
@@ -106,6 +81,7 @@ short ReadHowManyQuestions()
     return Questions;
 }
 short GetRandomNumber(enQuestionLevel QuestionLevel)
+
 {
     switch (QuestionLevel)
     {
@@ -115,7 +91,6 @@ short GetRandomNumber(enQuestionLevel QuestionLevel)
         break;
     case enQuestionLevel::Med:
         /* code */
-    cout <<"QuestionLevel";
         return RandomNumber(10, 50);
         break;
     case enQuestionLevel::Hard:
@@ -129,51 +104,220 @@ short GetRandomNumber(enQuestionLevel QuestionLevel)
         break;
     }
 }
-// char RandomOperationType()
-// {
-//     return  RandomNumber(1, 5);
-// }
+
+short RandomQuestionLevel()
+{
+    return RandomNumber(1, 4);
+}
+
+short RandomOperationType()
+{
+    return RandomNumber(1, 4);
+}
+
+string QuestionLevelType(enQuestionLevel QuestionLevel)
+{
+
+    string arrQuestionLevelName[3] = {"Easy", "Med", "Hard"};
+
+    return arrQuestionLevelName[QuestionLevel - 1];
+}
+
+string OperationTypeCharacter(enOperationType OperationType)
+{
+
+    string arrOperationType[4] = {"+", "-", "*", "/"};
+    return arrOperationType[OperationType - 1];
+}
+
+enQuestionLevel GetQuestionLevel(enQuestionLevel QuestionLevel)
+{
+    switch (QuestionLevel)
+    {
+    case enQuestionLevel::Easy: // 1 - 10
+        return enQuestionLevel::Easy;
+        break;
+    case enQuestionLevel::Med: // 10 - 20
+        return enQuestionLevel::Med;
+        break;
+    case enQuestionLevel::Hard: // 20 - 100
+        return enQuestionLevel::Hard;
+        break;
+    case enQuestionLevel::MixLevel:
+        return enQuestionLevel::MixLevel;
+        break;
+    default:
+        break;
+    }
+}
+
 enOperationType GetOperationType(enOperationType OperationType)
 {
     switch (OperationType)
     {
     case enOperationType::Add:
-
-        return (enOperationType)'+';
+        return enOperationType::Add;
         break;
     case enOperationType::Subtract:
-        return (enOperationType)'-';
+        return enOperationType::Subtract;
         break;
     case enOperationType::Multiply:
-        return (enOperationType)'*';
+        return enOperationType::Multiply;
         break;
     case enOperationType::Division:
-        return (enOperationType)'/';
+        return enOperationType::Division;
         break;
-        // case enOperationType::MixType:
-        //     return  RandomOperationType();
-        // break;
+    case enOperationType::MixType:
+        return (enOperationType)RandomOperationType();
+        break;
     default:
         break;
     }
 }
+
+// short Sum(stQuestionInfo QuestionInfo) {
+
+// return  QuestionInfo.Number1 + QuestionInfo.Number2;
+// }
+
+// short Subtract(stQuestionInfo QuestionInfo) {
+
+// return  QuestionInfo.Number1 - QuestionInfo.Number2;
+// }
+
+// short Multiply(stQuestionInfo QuestionInfo) {
+
+// return QuestionInfo.Number1 * QuestionInfo.Number2;
+// }
+
+// short Division(stQuestionInfo QuestionInfo) {
+
+// return  QuestionInfo.Number1 / QuestionInfo.Number2;
+// }
+
+// compare user answer with sum,subtract ...functions
+
+string AnswerName(enAnswer Answer)
+{
+    string arrAnswerName[2] = {"Right Answer :)", "Wrong Answer :("};
+
+    return arrAnswerName[Answer - 1];
+}
+
+enAnswer Answer(stQuestionInfo QuestionInfo)
+{
+
+    short Sum = QuestionInfo.Number1 + QuestionInfo.Number2;
+    short Sub = QuestionInfo.Number1 - QuestionInfo.Number2;
+    short Mul = QuestionInfo.Number1 * QuestionInfo.Number2;
+    short Div = QuestionInfo.Number1 / QuestionInfo.Number2;
+    switch (QuestionInfo.OperationType)
+    {
+
+    case enOperationType::Add:
+
+        return  enAnswer::RightAnswer;
+        break;
+    case enOperationType::Subtract:
+        return  enAnswer::RightAnswer;
+        break;
+    case enOperationType::Multiply:
+        return  enAnswer::RightAnswer;
+        break;
+    case enOperationType::Division:
+        return  enAnswer::RightAnswer;
+        break;
+    }
+}
+
+void UserAnswer(stQuestionInfo QuestionInfo)
+{
+
+    short MyAnswer = 0;
+
+    do
+    {
+
+        cin >> MyAnswer;
+
+    } while (MyAnswer < 0 || MyAnswer > 200);
+
+    if (Answer(QuestionInfo) == MyAnswer)
+    {
+        cout << "Right Answer :)" << endl;
+    }
+    else
+    {
+
+        cout << "Wrong Answer :(" << endl;
+        cout << "The right answer is " << Answer(QuestionInfo) << endl;
+    }
+
+
+
+
+}
+
+void GameOverScreen()
+{
+    cout << "_________________";
+ 
+    cout << "Final Result is ";
+    //    if (true)  {
+    //     cout << "Pass :)"
+    // }
+    // else
+    // {
+    //     cout << "Fail :("
+    // }
+    cout << "_________________";
+}
+
+void PrintQuestionResults(stQuestionInfo QuestionInfo)
+{
+
+    cout << "Question [" << QuestionInfo.QuestionNumber << "/" << QuestionInfo.QuestionNumbers << "]" << endl
+         << endl;
+    cout << QuestionInfo.Number1 << endl;
+    cout << QuestionInfo.Number2;
+    cout << " " << QuestionInfo.OperationTypeCharacter << endl;
+    cout << "_____" << endl;
+    cout << endl;
+    cout << endl;
+    UserAnswer(QuestionInfo);
+    GameOverScreen();
+}
+
+//  stGameResults FillGameResults (short NumberOfQuestions,short QuestionLevel,short OperationType,short RightAnswer,short WrongAnswer) {
+
+// stGameResults GameResults;
+// GameResults.NumberOfQuestions = NumberOfQuestions ;
+// GameResults.QuestionLevel = QuestionLevel;
+// GameResults.OperationType =  OperationType;
+// // GameResults.NumberOfRightAnswers =  RightAnswerTimes;
+// // GameResults.NumberOfWrongAnswers = WrongAnswerTimes;
+
+//  }
+
 stQuestionInfo PlayGame(short ReadHowManyQuestions)
 {
-        
+
     stQuestionInfo QuestionInfo;
 
     enQuestionLevel QuestionLevel = ReadQuestionLevel();
-    enOperationType OperationTypr = ReadOperationType();
-
-
+    enOperationType OperationType = ReadOperationType();
 
     short RightAnswerTimes = 0, WrongAnswerTimes = 0;
     for (short QuestionNumber = 1; QuestionNumber <= ReadHowManyQuestions; QuestionNumber++)
     {
+        QuestionInfo.QuestionNumbers = ReadHowManyQuestions;
         QuestionInfo.QuestionNumber = QuestionNumber;
         QuestionInfo.Number1 = GetRandomNumber(QuestionLevel);
-        // QuestionInfo.Number2 = GetRandomNumber(ReadQuestionLevel());
-        // QuestionInfo.OperationType = GetOperationType(ReadOperationType());
+        QuestionInfo.Number2 = GetRandomNumber(QuestionLevel);
+        QuestionInfo.OperationType = GetOperationType(OperationType);
+        QuestionInfo.OperationTypeCharacter = OperationTypeCharacter(QuestionInfo.OperationType);
+        QuestionInfo.Answer = Answer(QuestionInfo);
+
         // if (QuestionInfo.Answer == enAnswer::RightAnswer)
         // {
         //     RightAnswerTimes++;
@@ -182,20 +326,22 @@ stQuestionInfo PlayGame(short ReadHowManyQuestions)
         // {
         //     WrongAnswerTimes++;
         // }
+        PrintQuestionResults(QuestionInfo);
+    }
+    // return FillGameResults(ReadHowManyQuestions,QuestionLevel ,QuestionInfo.OperationType , RightAnswerTimes, WrongAnswerTimes);
+}
+void SetScreenColor(stQuestionInfo QuestionInfo)
+{
+    switch (QuestionInfo.Answer)
+    {
+    case enAnswer::RightAnswer :
+        system("color 2F");
+    case enAnswer::WrongAnswer :
+        system("color 4F");
+    default:
+        system("color 6F");
     }
 }
-// void SetScreenColor()
-// {
-//     switch ()
-//     {
-//     case:
-//         system("color 2F");
-//     case:
-//         system("color 4F");
-//     default:
-//         system("color 6F");
-//     }
-// }
 string Tabs(short NumberOfTabs)
 {
     string t = "";
@@ -206,6 +352,7 @@ string Tabs(short NumberOfTabs)
     }
     return t;
 }
+
 void ResetScreen()
 {
     system("cls");
