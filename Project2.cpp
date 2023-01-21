@@ -210,7 +210,7 @@ void AskAndCorrectQuestionListAnswers(stQuizz& Quizz)
         Quizz.QuestionList[QuestionNumber].PlayerAnswer = ReadQuestionAnswer();
         CorrectTheQuestionAnswer(Quizz, QuestionNumber);
     }
-    Quizz.isPass == (Quizz.NumberOfRightAnswers >= Quizz.NumberOfWrongAnswers);
+    Quizz.isPass = (Quizz.NumberOfRightAnswers >= Quizz.NumberOfWrongAnswers);
 }
 string GetFinalResultsText(bool Pass)
 {
